@@ -6,7 +6,7 @@ from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict
 from functools import partial, wraps
 from io import BytesIO
-from typing import Any
+from typing import Any, cast
 
 import matplotlib as mpl
 import numpy as np
@@ -136,7 +136,8 @@ class Panel:
         if not justification.strip() or not ylabel.strip():
             raise ValueError("dual_axis requires justification and a unit-bearing ylabel")
         with mpl.rc_context(rc_params(self.owner.config)):
-            ax = self.ax.twinx()
+            # Matplotlib 3.8 annotates twinx as _AxesBase, but it returns an Axes.
+            ax = cast(Axes, self.ax.twinx())
             ax.spines["right"].set_visible(True)
             ax.set_ylabel(ylabel)
         panel = Panel(self.owner, f"{self.name}_right", ax)

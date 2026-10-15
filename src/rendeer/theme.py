@@ -2,7 +2,8 @@
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Any
+
+import matplotlib as mpl
 
 from .config import Config
 
@@ -30,7 +31,7 @@ THEMES = MappingProxyType(
 )
 
 
-def rc_params(config: Config) -> dict[str, Any]:
+def rc_params(config: Config) -> mpl.RcParams:
     theme = THEMES[config.theme]
     result = {
         "font.family": "sans-serif",
@@ -70,4 +71,4 @@ def rc_params(config: Config) -> dict[str, Any]:
         "axes.formatter.useoffset": False,
     }
     result.update(dict(config.rc))
-    return result
+    return mpl.RcParams(result)
