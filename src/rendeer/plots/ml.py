@@ -49,9 +49,8 @@ def roc(
     if reference:
         panel.ax.plot([0, 1], [0, 1], color="#888888", linestyle=":", lw=0.8)
     panel.ax.set(xlim=(-0.02, 1.02), ylim=(-0.02, 1.02))
-    integrate = getattr(np, "trapezoid", None)
-    if integrate is None:
-        integrate = np.trapz
+    integration_name = "trapezoid" if hasattr(np, "trapezoid") else "trapz"
+    integrate = getattr(np, integration_name)
     panel.finish(
         "roc",
         xlabel="False positive rate",
